@@ -6,6 +6,8 @@ import Register from "../pages/Auth/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddLessons from "../pages/Dashboard/AddLessons/AddLessons";
+import PublicLessons from "../pages/PublicLessons/PublicLessons";
+import Upgrade from "../pages/Upgrade/Upgrade";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +17,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "public-lessons",
+        Component: PublicLessons,
+      },
+      {
+        path: "upgrade",
+        Component: Upgrade,
       },
       {
         path: "login",
@@ -33,11 +43,11 @@ export const router = createBrowserRouter([
         <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
-    children:[
+    children: [
       {
-        path: 'add-lessons',
-        Component: AddLessons
-      }
-    ]
+        path: "add-lessons",
+        Component: AddLessons,
+      },
+    ],
   },
 ]);

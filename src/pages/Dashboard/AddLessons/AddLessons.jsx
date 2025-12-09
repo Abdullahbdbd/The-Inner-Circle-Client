@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 
 const AddLessons = () => {
   const {
@@ -9,20 +10,28 @@ const AddLessons = () => {
     handleSubmit,
     // formState: { errors }
   } = useForm();
- const axiosSecure=useAxiosSecure();
-
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  console.log(user);
+  
 
   const isPremium = true;
 
   const handleAddLesson = (data) => {
+    const lessonData = {
+      ...data,
+      creatorEmail: user?.email,
+      creatorName: user?.displayName || user?.name || "Anonymous",
+      creatorPhoto:user?.photoURL,
+    };
 
-    axiosSecure.post('/add-lessons', data)
-    .then(res=>{
-        console.log(res.data);
-        if(res.data.insertedId){
-            toast.success("Your Lesson has been added");
-        }
-    })
+    axiosSecure.post("/add-lessons", lessonData)
+    .then((res) => {
+      console.log(res.data);
+      if (res.data.insertedId) {
+        toast.success("Your Lesson has been added");
+      }
+    });
   };
 
   return (
