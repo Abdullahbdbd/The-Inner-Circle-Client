@@ -8,6 +8,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AddLessons from "../pages/Dashboard/AddLessons/AddLessons";
 import PublicLessons from "../pages/PublicLessons/PublicLessons";
 import Upgrade from "../pages/Upgrade/Upgrade";
+import MyLessons from "../pages/Dashboard/MyLessons/MyLessons";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
         path: "add-lessons",
         Component: AddLessons,
       },
+      {
+        path: 'my-lessons',
+        Component: MyLessons
+      }
     ],
   },
 ]);

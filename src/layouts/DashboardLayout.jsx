@@ -2,6 +2,7 @@ import React from "react";
 import { Link, Outlet } from "react-router";
 import Logo from "../component/Logo/Logo";
 import { BiSolidBookAdd } from "react-icons/bi";
+import { FaBookOpenReader } from "react-icons/fa6";
 
 const DashboardLayout = () => {
   return (
@@ -83,6 +84,19 @@ const DashboardLayout = () => {
                 {/* Settings icon */}
                 <BiSolidBookAdd />
                 <span className="is-drawer-close:hidden">Add Lessons</span>
+              </Link>
+            </li>
+
+            {/* My Lessons Section */}
+            <li>
+              <Link
+                to='/dashboard/my-lessons'
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Lessons"
+              >
+                {/* Settings icon */}
+                <FaBookOpenReader />
+                <span className="is-drawer-close:hidden">My Lessons</span>
               </Link>
             </li>
 

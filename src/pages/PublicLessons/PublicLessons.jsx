@@ -80,7 +80,7 @@ const PublicLessons = () => {
                       {lesson.category}
                     </span>
                     <span className="badge badge-outline">
-                      {lesson.emotionalTone}
+                      {lesson.tone}
                     </span>
                   </div>
 
