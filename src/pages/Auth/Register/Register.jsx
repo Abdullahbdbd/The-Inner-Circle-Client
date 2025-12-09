@@ -21,10 +21,7 @@ const Register = () => {
     const profileImg = data.photo[0];
 
     registerUser(data.email, data.password)
-      .then((res) => {
-        console.log(res.user);
-
-
+      .then(() => {
 
         const formData = new FormData();
         formData.append("image", profileImg);
@@ -34,17 +31,21 @@ const Register = () => {
         }`;
 
         axios.post(image_API_URL, formData).then((res) => {
-          console.log("after image upload", res.data);
+          const photoURL = res.data.data.url;
 
           const userProfile = {
             displayName: data.name,
-            photoURL: res.data.data.url,
+            photoURL: photoURL,
           };
 
+          // create user in the database
+          
+
+          // update user profile to firebase
           updateUserProfile(userProfile)
-            .then(()=>{
-              console.log('user profile updated');
-              navigate(location?.state || '/')
+            .then(() => {
+              console.log("user profile updated");
+              navigate(location?.state || "/");
             })
             .catch((err) => {
               console.log(err.message);
@@ -152,10 +153,10 @@ const Register = () => {
         </fieldset>
         <p>
           Already have an account{" "}
-          <Link 
-          className="text-blue-500 underline" 
-          to={"/login"}
-          state={location.state}
+          <Link
+            className="text-blue-500 underline"
+            to={"/login"}
+            state={location.state}
           >
             Login
           </Link>

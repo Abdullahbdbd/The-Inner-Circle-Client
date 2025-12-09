@@ -7,12 +7,12 @@ const Navbar = () => {
   const { user, logOut } = useAuth();
   
   const links = (
-    <>
+    <div className="space-x-4">
       <NavLink to="/">Home</NavLink>
-      <NavLink to="/">Add Lesson</NavLink>
+      <NavLink to="/dashboard/add-lessons">Add Lesson</NavLink>
       <NavLink to="/">About</NavLink>
       <NavLink to="/">blog</NavLink>
-    </>
+    </div>
   );
 
   //   Handle Log Out
