@@ -1,18 +1,34 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { toast } from "react-toastify";
 
 const SocialLogin = () => {
   const { signInGoogle } = useAuth();
-  const location =useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const handleGoogleSignIn = () => {
     signInGoogle()
       .then((res) => {
         console.log(res.user);
-        navigate(location?.state || '/');
+
+        // create user in the database
+        const userInfo = {
+          email: res.user.email,
+          displayName: res.user.name,
+          photoURL: res.user.photoURL,
+        };
+        axiosSecure.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            toast.success("User created in the database");
+            navigate(location?.state || "/");
+          }
+        });
       })
+
       .catch((err) => {
         console.log(err.message);
       });

@@ -5,18 +5,46 @@ import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaLock, FaTrash } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 const MyLessons = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: lessons = [] } = useQuery({
+  const { data: lessons = [], refetch } = useQuery({
     queryKey: ["my-lessons", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-lessons?email=${user.email}`);
       return res.data;
     },
   });
+
+  // delete lessons
+  const handleLessonsDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/public-lessons/${id}`).then((res) => {
+          if (res.data.deletedCount) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your lesson has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-center">📘 My Lessons</h2>
@@ -99,14 +127,16 @@ const MyLessons = () => {
                   {/* Actions */}
                   <td>
                     <div className="flex gap-2">
-                     
                       <button className="btn btn-xs btn-info text-white">
                         <FaEdit />
                       </button>
-                      <button className="btn btn-xs btn-error text-white">
+                      <button
+                        onClick={() => handleLessonsDelete(lesson._id)}
+                        className="btn btn-xs btn-error text-white"
+                      >
                         <FaTrash />
                       </button>
-                       <Link
+                      <Link
                         to={`/lessons/${lesson._id}`}
                         className="btn btn-xs btn-outline btn-primary"
                       >
