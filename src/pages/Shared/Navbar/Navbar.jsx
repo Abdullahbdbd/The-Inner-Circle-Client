@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import Logo from "../../../component/Logo/Logo";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
-  
+  const axiosSecure = useAxiosSecure();
+  const [dbUser, setDbUser] = useState(null);
+
+  axiosSecure.get(`/users/${user?.email}`).then((res) => {
+    setDbUser(res.data);
+  });
+
   const links = (
     <div className="space-x-4">
       <NavLink to="/">Home</NavLink>
       <NavLink to="/dashboard/add-lessons">Add Lesson</NavLink>
       <NavLink to="/public-lessons">Public Lesson</NavLink>
-      <NavLink to="/upgrade">Upgrade</NavLink>
+      {dbUser?.isPremium === true ? (
+        <NavLink>Premium ⭐</NavLink>
+      ) : (
+        <NavLink to="/upgrade">Upgrade</NavLink>
+      )}
     </div>
   );
 

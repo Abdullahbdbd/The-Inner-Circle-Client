@@ -1,6 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router';
+import useAuth from '../../hooks/useAuth';
 
 const Upgrade = () => {
+  const {user}=useAuth()
+  
+
     return (
        <div className="max-w-5xl mx-auto px-4 py-12 text-center">
       <h1 className="text-4xl font-bold mb-8">Upgrade to Premium 🌟</h1>
@@ -56,12 +61,12 @@ const Upgrade = () => {
       </div>
 
       {/* Checkout Button */}
-      <button
+      <Link to={`/payment/${user.email}`}
         
         className="btn btn-primary btn-lg px-10"
       >
         💳 Upgrade to Premium — ৳1500 (Lifetime)
-      </button>
+      </Link>
     </div>
     );
 };

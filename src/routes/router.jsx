@@ -9,6 +9,9 @@ import AddLessons from "../pages/Dashboard/AddLessons/AddLessons";
 import PublicLessons from "../pages/PublicLessons/PublicLessons";
 import Upgrade from "../pages/Upgrade/Upgrade";
 import MyLessons from "../pages/Dashboard/MyLessons/MyLessons";
+import Payment from "../pages/Payment/Payment";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +29,18 @@ export const router = createBrowserRouter([
       {
         path: "upgrade",
         Component: Upgrade,
+      },
+      {
+        path:'payment/:email',
+        Component: Payment
+      },
+      {
+        path:'payment-success',
+        Component: PaymentSuccess
+      },
+      {
+        path:'payment-cancelled',
+        Component: PaymentCancelled
       },
       {
         path: "login",
