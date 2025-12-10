@@ -99,17 +99,6 @@ const AddLessons = () => {
           </fieldset>
         </div>
 
-        {/* Image Upload */}
-        <fieldset className="fieldset">
-          <label className="label">Image (Optional)</label>
-          <input
-            type="url"
-            {...register("image")}
-            placeholder="Paste image URL (optional)"
-            className="input w-full"
-          />
-        </fieldset>
-
         {/* Privacy */}
         <fieldset className="fieldset mt-6">
           <legend className="fieldset-legend">Privacy</legend>

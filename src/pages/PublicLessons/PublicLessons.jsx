@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaLock } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useAuth from "../../hooks/useAuth";
+import useUserStatus from "../../hooks/useUserStatus";
+import { Link } from "react-router";
 
 const PublicLessons = () => {
   const axiosSecure = useAxiosSecure();
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {user}=useAuth()
-  console.log(lessons);
-  
+  const { isPremium } = useUserStatus();
 
   useEffect(() => {
     axiosSecure
@@ -24,13 +23,13 @@ const PublicLessons = () => {
       });
   }, [axiosSecure]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
-  }
+if (loading ) {
+  return (
+    <div className="flex justify-center items-center h-64">
+      <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  );
+}
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
@@ -45,8 +44,7 @@ const PublicLessons = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {lessons.map((lesson) => {
-            const isLocked =
-              lesson.accessLevel === "Premium" && !user?.isPremium;
+            const isLocked = lesson.accessLevel === "Premium" && !isPremium;
 
             return (
               <div
@@ -55,18 +53,6 @@ const PublicLessons = () => {
                   isLocked ? "overflow-hidden" : ""
                 }`}
               >
-                {/* Image */}
-                {lesson.image && (
-                  <figure>
-                    <img
-                      src={lesson.image}
-                      alt={lesson.title}
-                      className={`h-48 w-full object-cover ${
-                        isLocked ? "blur-sm brightness-75" : ""
-                      }`}
-                    />
-                  </figure>
-                )}
 
                 {/* Card Body */}
                 <div className={`card-body ${isLocked ? "blur-sm" : ""}`}>
@@ -75,13 +61,9 @@ const PublicLessons = () => {
                     {lesson.description.slice(0, 100)}...
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-3 text-xs text-gray-500">
-                    <span className="badge badge-outline">
-                      {lesson.category}
-                    </span>
-                    <span className="badge badge-outline">
-                      {lesson.tone}
-                    </span>
+                  <div className="mt-3 text-gray-500">
+                    <p>Category: {lesson.category}</p>
+                    <p>Tone: {lesson.tone}</p>
                   </div>
 
                   {/* Creator Info */}
@@ -89,9 +71,7 @@ const PublicLessons = () => {
                     <div className="avatar">
                       <div className="w-8 rounded-full">
                         <img
-                          src={
-                            lesson.creatorPhoto || "/default-avatar.png"
-                          }
+                          src={lesson.creatorPhoto}
                           alt={lesson.creatorName}
                         />
                       </div>
@@ -119,7 +99,7 @@ const PublicLessons = () => {
 
                   {/* Details Button */}
                   <div className="card-actions justify-end mt-4">
-                    <button
+                    <Link to={`/public-lessons/${lesson._id}`}
                       className={`btn btn-sm ${
                         isLocked
                           ? "btn-disabled cursor-not-allowed"
@@ -127,7 +107,7 @@ const PublicLessons = () => {
                       }`}
                     >
                       See Details
-                    </button>
+                    </Link>
                   </div>
                 </div>
 
@@ -141,6 +121,9 @@ const PublicLessons = () => {
                     <p className="text-sm text-gray-600">
                       Upgrade to view this content
                     </p>
+                    <Link to="/upgrade" className="btn ">
+                      Upgrade
+                    </Link>
                   </div>
                 )}
               </div>

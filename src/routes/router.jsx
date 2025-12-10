@@ -12,6 +12,7 @@ import MyLessons from "../pages/Dashboard/MyLessons/MyLessons";
 import Payment from "../pages/Payment/Payment";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancelled from "../pages/Payment/PaymentCancelled";
+import DetailsPage from "../pages/DetailsPages/DetailsPage/DetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ export const router = createBrowserRouter([
       {
         path: "public-lessons",
         Component: PublicLessons,
+      },
+      {
+        path:'public-lessons/:id',
+        Component:DetailsPage,
+        
       },
       {
         path: "upgrade",
@@ -50,6 +56,7 @@ export const router = createBrowserRouter([
         path: "register",
         Component: Register,
       },
+      
     ],
   },
   {

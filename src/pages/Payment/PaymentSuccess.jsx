@@ -9,17 +9,20 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     if (sessionId) {
-      axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
-      .then(res=>{
-        console.log(res.data);
-        
-      })
+      axiosSecure
+        .patch(`/payment-success?session_id=${sessionId}`)
+        .then((res) => {
+          console.log(res.data);
+        });
     }
   }, [sessionId, axiosSecure]);
 
   return (
-    <div>
-      <h1 className="text-green-500">Payment Successful</h1>
+    <div className="text-center mt-16">
+      <h1 className="text-3xl font-bold text-green-600">
+        Payment Successful 🎉
+      </h1>
+      <p>Your Premium access is now activated!</p>
     </div>
   );
 };

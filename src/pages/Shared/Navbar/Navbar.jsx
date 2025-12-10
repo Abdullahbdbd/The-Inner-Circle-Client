@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import Logo from "../../../component/Logo/Logo";
 import useAuth from "../../../hooks/useAuth";
@@ -9,19 +9,25 @@ const Navbar = () => {
   const axiosSecure = useAxiosSecure();
   const [dbUser, setDbUser] = useState(null);
 
-  axiosSecure.get(`/users/${user?.email}`).then((res) => {
-    setDbUser(res.data);
-  });
+  useEffect(() => {
+    if (user?.email) {
+      axiosSecure.get(`/users/${user.email}`).then((res) => {
+        setDbUser(res.data);
+      });
+    }
+  }, [user, axiosSecure]);
 
   const links = (
     <div className="space-x-4">
       <NavLink to="/">Home</NavLink>
       <NavLink to="/dashboard/add-lessons">Add Lesson</NavLink>
       <NavLink to="/public-lessons">Public Lesson</NavLink>
-      {dbUser?.isPremium === true ? (
-        <NavLink>Premium ⭐</NavLink>
+      {dbUser?.isPremium ? (
+        <span className="text-yellow-500 font-semibold">⭐ Premium</span>
       ) : (
-        <NavLink to="/upgrade">Upgrade</NavLink>
+        <NavLink to={`/payment/${user?.email || ""}`} className="text-blue-600">
+          Upgrade
+        </NavLink>
       )}
     </div>
   );
