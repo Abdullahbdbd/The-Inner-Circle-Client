@@ -8,6 +8,7 @@ import CreatorSection from '../CreatorSection/CreatorSection';
 import EngagementSection from '../EngagementSection/EngagementSection';
 import CommentSection from '../CommentSection/CommentSection';
 import SimilarLessons from '../SimilarLessons/SimilarLessons';
+import InteractionButtons from '../InteractionButtons/InteractionButtons';
 
 const DetailsPage = () => {
 const { id } = useParams();
@@ -36,8 +37,8 @@ if (isLoading) {
       <InformationSection lesson={lesson}></InformationSection>
       <MetadataSection lesson={lesson}></MetadataSection>
       <CreatorSection lesson={lesson}></CreatorSection>
+      <InteractionButtons lesson={lesson}></InteractionButtons>
       <EngagementSection lesson={lesson}></EngagementSection>
-
       <CommentSection lesson={lesson}></CommentSection>
       <SimilarLessons></SimilarLessons>
     </div>

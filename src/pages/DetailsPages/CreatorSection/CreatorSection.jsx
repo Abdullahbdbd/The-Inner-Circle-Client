@@ -1,10 +1,24 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router";
 import { FaUserCircle, FaBookOpen } from "react-icons/fa";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
-const CreatorSection = ({lesson}) => {
-    return (
-         <section className="bg-base-100 shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-base-200">
+const CreatorSection = ({ lesson }) => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const { data: lessons = [] } = useQuery({
+    queryKey: ["my-lessons", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/my-lessons?email=${user.email}`);
+      return res.data;
+    },
+  });
+
+  return (
+    <section className="bg-base-100 shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-base-200">
       <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
         👤 Author / Creator
       </h2>
@@ -35,7 +49,7 @@ const CreatorSection = ({lesson}) => {
             <span>
               Total Lessons:{" "}
               <span className="font-semibold text-gray-800">
-                {lesson.totalLessons || 0}
+                {lessons.length || 0}
               </span>
             </span>
           </p>
@@ -49,7 +63,7 @@ const CreatorSection = ({lesson}) => {
         </div>
       </div>
     </section>
-    );
+  );
 };
 
 export default CreatorSection;
