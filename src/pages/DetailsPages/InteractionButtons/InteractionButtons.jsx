@@ -3,6 +3,14 @@ import { FaHeart, FaBookmark, FaFlag, FaShareAlt } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+} from "react-share";
 
 const InteractionButtons = ({ lesson }) => {
   const { user } = useAuth();
@@ -38,7 +46,6 @@ const InteractionButtons = ({ lesson }) => {
 
   //favorite section
   const isFavorited = user && lesson.favorites?.includes(user.uid);
-
   const handleFavorite = async () => {
     if (!user) {
       window.location.href = "/login"; // not logged in → go to login
@@ -49,6 +56,10 @@ const InteractionButtons = ({ lesson }) => {
     });
     queryClient.invalidateQueries(["lesson", lesson._id]); // refetch lesson
   };
+
+  // share section
+  const shareUrl = window.location.href;
+  const title = lesson.title;
 
   return (
     <div className="flex flex-wrap gap-4 mt-6">
@@ -76,10 +87,22 @@ const InteractionButtons = ({ lesson }) => {
       </button>
 
       {/* Share Button */}
-      <button className="btn btn-sm btn-info">
-        <FaShareAlt className="mr-2" />
-        Share
-      </button>
+       <div className="flex gap-2">
+      {/* Facebook */}
+      <FacebookShareButton url={shareUrl} quote={title}>
+        <FacebookIcon size={32} round />
+      </FacebookShareButton>
+
+      {/* Twitter */}
+      <TwitterShareButton url={shareUrl} title={title}>
+        <TwitterIcon size={32} round />
+      </TwitterShareButton>
+
+      {/* LinkedIn */}
+      <LinkedinShareButton url={shareUrl} title={title}>
+        <LinkedinIcon size={32} round />
+      </LinkedinShareButton>
+    </div>
     </div>
   );
 };
