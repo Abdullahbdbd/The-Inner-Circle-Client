@@ -1,88 +1,64 @@
 import React from "react";
 import { Link } from "react-router";
 import { FaLock } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
-const SimilarLessons = ({ lessons = [], currentUser }) => {
-  if (lessons.length === 0) return null;
+const SimilarLessons = ({ lessonId }) => {
+   const axiosSecure = useAxiosSecure();
+   console.log('lesson id:', lessonId);
+   
+
+  const { data: relatedLessons = [], isLoading } = useQuery({
+    queryKey: ["related-lessons", lessonId],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/public-lessons/${lessonId}/related`);
+      return res.data;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-10">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
 
   return (
-    <section className="my-12">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        🔄 Similar & Recommended Lessons
-      </h2>
+     <section className="mt-10">
+      <h2 className="text-2xl font-bold mb-6">✨ Similar & Recommended Lessons</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {lessons.slice(0, 6).map((lesson) => {
-          const isLocked = lesson.accessLevel === "Premium" && !currentUser?.isPremium;
-
-          return (
+      {relatedLessons.length === 0 ? (
+        <p className="text-gray-500 italic">No related lessons found.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {relatedLessons.map((lesson) => (
             <div
               key={lesson._id}
-              className={`card bg-base-100 shadow-lg relative overflow-hidden`}
+              className="card bg-base-100 shadow-md hover:shadow-lg transition border border-base-200"
             >
-              {/* Optional Image */}
-              {lesson.image && (
-                <figure>
-                  <img
-                    src={lesson.image}
-                    alt={lesson.title}
-                    className={`h-48 w-full object-cover ${
-                      isLocked ? "blur-sm brightness-75" : ""
-                    }`}
-                  />
-                </figure>
-              )}
-
-              <div className={`card-body ${isLocked ? "blur-sm" : ""}`}>
-                <h3 className="card-title text-lg">{lesson.title}</h3>
-                <p className="text-sm text-gray-600 truncate">
-                  {lesson.description?.slice(0, 80)}...
+              <div className="card-body">
+                <h3 className="font-semibold text-lg">{lesson.title}</h3>
+                <p className="text-gray-600 text-sm">
+                  {lesson.description.slice(0, 100)}...
                 </p>
-
-                <div className="flex justify-between items-center mt-3 text-sm">
-                  <span
-                    className={`badge ${
-                      lesson.accessLevel === "Premium"
-                        ? "badge-warning"
-                        : "badge-success"
-                    }`}
-                  >
-                    {lesson.accessLevel}
-                  </span>
-                  <span className="text-gray-500">
-                    {new Date(lesson.createdAt).toLocaleDateString()}
-                  </span>
+                <div className="flex justify-between items-center mt-3">
+                  <span className="badge badge-outline">{lesson.category}</span>
+                  <span className="badge badge-outline">{lesson.tone}</span>
                 </div>
-
-                <div className="card-actions justify-end mt-4">
-                  <Link
-                    to={`/public-lessons/${lesson._id}`}
-                    className={`btn btn-sm ${
-                      isLocked ? "btn-disabled cursor-not-allowed" : "btn-primary"
-                    }`}
-                  >
-                    See Details
-                  </Link>
-                </div>
+                <Link
+                  to={`/public-lessons/${lesson._id}`}
+                  className="btn btn-sm btn-primary mt-4"
+                >
+                  View Details
+                </Link>
               </div>
-
-              {/* Lock Overlay */}
-              {isLocked && (
-                <div className="absolute inset-0 bg-white bg-opacity-80 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
-                  <FaLock className="text-3xl text-gray-600 mb-2" />
-                  <p className="font-semibold text-gray-800">Premium Lesson</p>
-                  <p className="text-sm text-gray-600">
-                    Upgrade to view this content
-                  </p>
-                  <Link to="/upgrade" className="btn btn-sm mt-2">
-                    Upgrade
-                  </Link>
-                </div>
-              )}
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 };

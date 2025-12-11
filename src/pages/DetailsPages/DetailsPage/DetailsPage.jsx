@@ -30,7 +30,6 @@ if (isLoading) {
     </div>
   );
 }
-
   return (
     
     <div>
@@ -40,7 +39,7 @@ if (isLoading) {
       <InteractionButtons lesson={lesson}></InteractionButtons>
       <EngagementSection lesson={lesson}></EngagementSection>
       <CommentSection lesson={lesson}></CommentSection>
-      <SimilarLessons></SimilarLessons>
+      <SimilarLessons lessonId={lesson._id}></SimilarLessons>
     </div>
   );
 };
