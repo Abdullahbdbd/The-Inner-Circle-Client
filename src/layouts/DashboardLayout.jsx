@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Outlet } from "react-router";
 import Logo from "../component/Logo/Logo";
 import { BiSolidBookAdd } from "react-icons/bi";
-import { FaBookOpenReader } from "react-icons/fa6";
+import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
 
 const DashboardLayout = () => {
   return (
@@ -97,6 +97,19 @@ const DashboardLayout = () => {
                 {/* Settings icon */}
                 <FaBookOpenReader />
                 <span className="is-drawer-close:hidden">My Lessons</span>
+              </Link>
+            </li>
+
+            {/* My Favorites Section */}
+            <li>
+              <Link
+                to='/dashboard/my-favorites'
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Favorites"
+              >
+                {/* Settings icon */}
+                <FaBookBookmark />
+                <span className="is-drawer-close:hidden">My Favorites</span>
               </Link>
             </li>
 

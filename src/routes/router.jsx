@@ -13,6 +13,7 @@ import Payment from "../pages/Payment/Payment";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 import DetailsPage from "../pages/DetailsPages/DetailsPage/DetailsPage";
+import MyFavorites from "../pages/Dashboard/MyFavorites/MyFavorites";
 
 export const router = createBrowserRouter([
   {
@@ -28,25 +29,24 @@ export const router = createBrowserRouter([
         Component: PublicLessons,
       },
       {
-        path:'public-lessons/:id',
-        Component:DetailsPage,
-        
+        path: "public-lessons/:id",
+        Component: DetailsPage,
       },
       {
         path: "upgrade",
         Component: Upgrade,
       },
       {
-        path:'payment/:email',
-        Component: Payment
+        path: "payment/:email",
+        Component: Payment,
       },
       {
-        path:'payment-success',
-        Component: PaymentSuccess
+        path: "payment-success",
+        Component: PaymentSuccess,
       },
       {
-        path:'payment-cancelled',
-        Component: PaymentCancelled
+        path: "payment-cancelled",
+        Component: PaymentCancelled,
       },
       {
         path: "login",
@@ -56,7 +56,6 @@ export const router = createBrowserRouter([
         path: "register",
         Component: Register,
       },
-      
     ],
   },
   {
@@ -72,9 +71,13 @@ export const router = createBrowserRouter([
         Component: AddLessons,
       },
       {
-        path: 'my-lessons',
-        Component: MyLessons
-      }
+        path: "my-lessons",
+        Component: MyLessons,
+      },
+      {
+        path: "my-favorites",
+        Component:MyFavorites
+      },
     ],
   },
 ]);
