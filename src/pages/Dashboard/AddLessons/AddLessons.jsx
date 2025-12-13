@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import useUserStatus from "../../../hooks/useUserStatus";
 
 const AddLessons = () => {
   const {
@@ -12,8 +13,8 @@ const AddLessons = () => {
   } = useForm();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  console.log(user);
-  
+  const userStatus = useUserStatus()
+  console.log(userStatus);
 
   const isPremium = true;
 
@@ -117,13 +118,13 @@ const AddLessons = () => {
           <legend className="fieldset-legend">Access Level</legend>
           <select
             {...register("accessLevel", { required: true })}
-            disabled={!isPremium}
+            disabled={!userStatus.isPremium}
             defaultValue={isPremium ? "Free" : "Free"}
             className={`select w-full ${
               !isPremium ? "opacity-60 cursor-not-allowed" : ""
             }`}
             title={
-              !isPremium ? "Upgrade to Premium to create paid lessons" : ""
+              !userStatus.isPremium ? "Upgrade to Premium to create paid lessons" : ""
             }
           >
             <option value="Free">Free</option>
