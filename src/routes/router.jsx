@@ -15,6 +15,7 @@ import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 import DetailsPage from "../pages/DetailsPages/DetailsPage/DetailsPage";
 import MyFavorites from "../pages/Dashboard/MyFavorites/MyFavorites";
 import Profile from "../pages/Dashboard/Profile/Profile";
+import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      {
+        index:true,
+        Component: DashboardHome
+      },
       {
         path: "add-lessons",
         Component: AddLessons,

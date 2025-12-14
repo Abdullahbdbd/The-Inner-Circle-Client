@@ -34,7 +34,7 @@ const DashboardLayout = () => {
             </svg>
           </label>
           <div className="px-4">
-            <Logo></Logo>
+           <Link to='/'> <Logo></Logo></Link>
           </div>
         </nav>
         {/* Page content here */}
@@ -53,7 +53,7 @@ const DashboardLayout = () => {
             {/* Home Section*/}
             <li>
               <Link
-                to='/'
+                to='/dashboard'
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
