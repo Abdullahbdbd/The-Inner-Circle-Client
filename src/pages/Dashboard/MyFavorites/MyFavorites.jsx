@@ -12,16 +12,18 @@ const MyFavorites = () => {
 
   const [filter, setFilter] = useState({ category: "", tone: "" });
 
-  // 🧠 Load user's favorites
+  //Load user's favorites
   const { data: favorites = [], refetch, isLoading } = useQuery({
     queryKey: ["favorites", user?.uid],
     queryFn: async () => {
       const res = await axiosSecure.get(`/favorites/${user.uid}`);
+      console.log(user?.uid);
+      
       return res.data;
     },
   });
 
-  // 🧹 Remove favorite
+  // Remove favorite
   const handleRemoveFavorite = async (lessonId) => {
     Swal.fire({
       title: "Remove from favorites?",
@@ -48,7 +50,7 @@ const MyFavorites = () => {
     );
   }
 
-  // 🎯 Filtered favorites
+  //Filtered favorites
   const filteredFavorites = favorites.filter((fav) => {
     const matchCategory = filter.category
       ? fav.category === filter.category
@@ -101,7 +103,6 @@ const MyFavorites = () => {
                 <th>Category</th>
                 <th>Tone</th>
                 <th>Access</th>
-                <th>Favorites</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -114,7 +115,6 @@ const MyFavorites = () => {
                   <td>{lesson.category}</td>
                   <td>{lesson.tone}</td>
                   <td>{lesson.accessLevel}</td>
-                  <td>{lesson.favoritesCount || 0}</td>
 
                   <td>
                     <div className="flex gap-2">

@@ -14,6 +14,7 @@ import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 import DetailsPage from "../pages/DetailsPages/DetailsPage/DetailsPage";
 import MyFavorites from "../pages/Dashboard/MyFavorites/MyFavorites";
+import Profile from "../pages/Dashboard/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -76,7 +77,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "my-favorites",
-        Component:MyFavorites
+        Component: MyFavorites,
+      },
+      {
+        path: "profile",
+        Component: Profile
       },
     ],
   },
