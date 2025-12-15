@@ -9,21 +9,19 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const MyFavorites = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-
   const [filter, setFilter] = useState({ category: "", tone: "" });
 
-  //Load user's favorites
+  // Load user's favorites
   const { data: favorites = [], refetch, isLoading } = useQuery({
-    queryKey: ["favorites", user?.uid],
+    queryKey: ["favorites", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/favorites/${user.uid}`);
-      console.log(user?.uid);
-      
+      const res = await axiosSecure.get(`/favorites/${user.email}`);
       return res.data;
     },
+    enabled: !!user?.email, // prevent query before user loads
   });
 
-  // Remove favorite
+  // Remove from favorites
   const handleRemoveFavorite = async (lessonId) => {
     Swal.fire({
       title: "Remove from favorites?",
@@ -34,7 +32,7 @@ const MyFavorites = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await axiosSecure.patch(`/public-lessons/${lessonId}/favorite`, {
-          userId: user.uid,
+          userId: user.email,
         });
         refetch();
         Swal.fire("Removed!", "Lesson removed from favorites.", "success");
@@ -50,7 +48,7 @@ const MyFavorites = () => {
     );
   }
 
-  //Filtered favorites
+  // Apply filters
   const filteredFavorites = favorites.filter((fav) => {
     const matchCategory = filter.category
       ? fav.category === filter.category

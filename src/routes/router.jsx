@@ -16,6 +16,7 @@ import DetailsPage from "../pages/DetailsPages/DetailsPage/DetailsPage";
 import MyFavorites from "../pages/Dashboard/MyFavorites/MyFavorites";
 import Profile from "../pages/Dashboard/Profile/Profile";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
+import UserManagement from "../pages/Dashboard/UserManagement/UserManagement";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
         path: "profile",
         Component: Profile
       },
+      {
+        path: 'user-management',
+        Component: UserManagement
+      }
     ],
   },
 ]);

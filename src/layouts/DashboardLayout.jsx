@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router";
 import Logo from "../component/Logo/Logo";
 import { BiSolidBookAdd } from "react-icons/bi";
 import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
-import { FaHome, FaUserCircle } from "react-icons/fa";
+import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
 
 const DashboardLayout = () => {
   return (
@@ -112,6 +112,19 @@ const DashboardLayout = () => {
                 {/* Settings icon */}
                 <FaBookBookmark />
                 <span className="is-drawer-close:hidden">My Favorites</span>
+              </Link>
+            </li>
+
+            {/* User Management Section */}
+            <li>
+              <Link
+                to='/dashboard/user-management'
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="User Management"
+              >
+                {/* Settings icon */}
+                <FaUsers />
+                <span className="is-drawer-close:hidden">User Management</span>
               </Link>
             </li>
 
