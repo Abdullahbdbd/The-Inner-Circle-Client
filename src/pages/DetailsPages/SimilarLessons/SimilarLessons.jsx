@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 
 const SimilarLessons = ({ lessonId }) => {
    const axiosSecure = useAxiosSecure();
-   console.log('lesson id:', lessonId);
    
 
   const { data: relatedLessons = [], isLoading } = useQuery({

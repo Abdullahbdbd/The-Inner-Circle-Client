@@ -18,6 +18,7 @@ import Profile from "../pages/Dashboard/Profile/Profile";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import UserManagement from "../pages/Dashboard/UserManagement/UserManagement";
 import AdminRoute from "./AdminRoute";
+import AdminDashboardHome from "../pages/Dashboard/AdminDashboardHome/AdminDashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -95,6 +96,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin-summary",
+        element: (
+          <AdminRoute>
+            <AdminDashboardHome></AdminDashboardHome>
           </AdminRoute>
         ),
       },

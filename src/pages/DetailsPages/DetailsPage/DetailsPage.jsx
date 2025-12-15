@@ -21,7 +21,6 @@ const { data: lesson, isLoading } = useQuery({
     return res.data;
   },
 });
-console.log(lesson);
 
 if (isLoading) {
   return (

@@ -5,6 +5,7 @@ import { BiSolidBookAdd } from "react-icons/bi";
 import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
 import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
 import useRole from "../hooks/useRole";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -122,6 +123,21 @@ const DashboardLayout = () => {
 
             {role === "admin" && (
               <>
+                {/* Admin Dashboard Home  */}
+                <li>
+                  <Link
+                    to="/dashboard/admin-summary"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Admin Dashboard Home"
+                  >
+                    {/* Settings icon */}
+                    <MdAdminPanelSettings />
+                    <span className="is-drawer-close:hidden">
+                      Admin Dashboard Home
+                    </span>
+                  </Link>
+                </li>
+
                 {/* User Management Section */}
                 <li>
                   <Link
@@ -137,7 +153,7 @@ const DashboardLayout = () => {
                   </Link>
                 </li>
 
-                
+
               </>
             )}
           </ul>
