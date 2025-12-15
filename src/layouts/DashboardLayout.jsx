@@ -4,8 +4,10 @@ import Logo from "../component/Logo/Logo";
 import { BiSolidBookAdd } from "react-icons/bi";
 import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
 import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
+  const { role } = useRole();
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -34,7 +36,10 @@ const DashboardLayout = () => {
             </svg>
           </label>
           <div className="px-4">
-           <Link to='/'> <Logo></Logo></Link>
+            <Link to="/">
+              {" "}
+              <Logo></Logo>
+            </Link>
           </div>
         </nav>
         {/* Page content here */}
@@ -53,7 +58,7 @@ const DashboardLayout = () => {
             {/* Home Section*/}
             <li>
               <Link
-                to='/dashboard'
+                to="/dashboard"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
@@ -66,7 +71,7 @@ const DashboardLayout = () => {
             {/* Profile Section*/}
             <li>
               <Link
-                to='/dashboard/profile'
+                to="/dashboard/profile"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Profile"
               >
@@ -79,7 +84,7 @@ const DashboardLayout = () => {
             {/* Add Lessons Section */}
             <li>
               <Link
-                to='/dashboard/add-lessons'
+                to="/dashboard/add-lessons"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Add Lessons"
               >
@@ -92,7 +97,7 @@ const DashboardLayout = () => {
             {/* My Lessons Section */}
             <li>
               <Link
-                to='/dashboard/my-lessons'
+                to="/dashboard/my-lessons"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="My Lessons"
               >
@@ -105,7 +110,7 @@ const DashboardLayout = () => {
             {/* My Favorites Section */}
             <li>
               <Link
-                to='/dashboard/my-favorites'
+                to="/dashboard/my-favorites"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="My Favorites"
               >
@@ -115,19 +120,26 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
-            {/* User Management Section */}
-            <li>
-              <Link
-                to='/dashboard/user-management'
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="User Management"
-              >
-                {/* Settings icon */}
-                <FaUsers />
-                <span className="is-drawer-close:hidden">User Management</span>
-              </Link>
-            </li>
+            {role === "admin" && (
+              <>
+                {/* User Management Section */}
+                <li>
+                  <Link
+                    to="/dashboard/user-management"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="User Management"
+                  >
+                    {/* Settings icon */}
+                    <FaUsers />
+                    <span className="is-drawer-close:hidden">
+                      User Management
+                    </span>
+                  </Link>
+                </li>
 
+                
+              </>
+            )}
           </ul>
         </div>
       </div>

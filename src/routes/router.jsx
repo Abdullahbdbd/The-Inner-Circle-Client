@@ -17,6 +17,7 @@ import MyFavorites from "../pages/Dashboard/MyFavorites/MyFavorites";
 import Profile from "../pages/Dashboard/Profile/Profile";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import UserManagement from "../pages/Dashboard/UserManagement/UserManagement";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -70,8 +71,8 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        index:true,
-        Component: DashboardHome
+        index: true,
+        Component: DashboardHome,
       },
       {
         path: "add-lessons",
@@ -87,12 +88,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        Component: Profile
+        Component: Profile,
       },
       {
-        path: 'user-management',
-        Component: UserManagement
-      }
+        path: "user-management",
+        element: (
+          <AdminRoute>
+            <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
+      },
     ],
   },
 ]);
