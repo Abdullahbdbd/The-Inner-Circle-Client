@@ -5,7 +5,7 @@ import { BiSolidBookAdd } from "react-icons/bi";
 import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
 import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
 import useRole from "../hooks/useRole";
-import { MdAdminPanelSettings } from "react-icons/md";
+import { MdAdminPanelSettings, MdReport } from "react-icons/md";
 import { LuNotebookPen } from "react-icons/lu";
 
 
@@ -166,6 +166,21 @@ const DashboardLayout = () => {
                     <LuNotebookPen />
                     <span className="is-drawer-close:hidden">
                       Manage Lessons
+                    </span>
+                  </Link>
+                </li>
+
+                {/* Reported Lessons  Section */}
+                <li>
+                  <Link
+                    to="/dashboard/reported-lessons"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Reported Lessons"
+                  >
+                    {/* Settings icon */}
+                    <MdReport />
+                    <span className="is-drawer-close:hidden">
+                     Reported Lessons
                     </span>
                   </Link>
                 </li>

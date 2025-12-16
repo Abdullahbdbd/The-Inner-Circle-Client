@@ -92,6 +92,7 @@ const InteractionButtons = ({ lesson }) => {
       await axiosSecure.post(`/lessons/${lesson._id}/report`, {
         reporterEmail: user.email,
         reason,
+        title: lesson.title
       });
 
       Swal.fire({
