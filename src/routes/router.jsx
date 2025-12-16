@@ -19,6 +19,7 @@ import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import UserManagement from "../pages/Dashboard/UserManagement/UserManagement";
 import AdminRoute from "./AdminRoute";
 import AdminDashboardHome from "../pages/Dashboard/AdminDashboardHome/AdminDashboardHome";
+import ManageLessons from "../pages/Dashboard/ManageLessons/ManageLessons";
 
 export const router = createBrowserRouter([
   {
@@ -104,6 +105,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AdminDashboardHome></AdminDashboardHome>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-lessons",
+        element: (
+          <AdminRoute>
+            <ManageLessons></ManageLessons>
           </AdminRoute>
         ),
       },

@@ -6,6 +6,8 @@ import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
 import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
 import useRole from "../hooks/useRole";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { LuNotebookPen } from "react-icons/lu";
+
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -149,6 +151,21 @@ const DashboardLayout = () => {
                     <FaUsers />
                     <span className="is-drawer-close:hidden">
                       User Management
+                    </span>
+                  </Link>
+                </li>
+
+                {/* Manage Lessons  Section */}
+                <li>
+                  <Link
+                    to="/dashboard/manage-lessons"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Lessons"
+                  >
+                    {/* Settings icon */}
+                    <LuNotebookPen />
+                    <span className="is-drawer-close:hidden">
+                      Manage Lessons
                     </span>
                   </Link>
                 </li>
