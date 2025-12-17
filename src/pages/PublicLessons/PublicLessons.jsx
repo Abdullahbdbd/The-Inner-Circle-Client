@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { FaLock } from "react-icons/fa";
+import React, { useEffect, useState, useMemo } from "react";
+import { FaLock, FaSearch } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useUserStatus from "../../hooks/useUserStatus";
 import { Link } from "react-router";
@@ -9,6 +9,12 @@ const PublicLessons = () => {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isPremium } = useUserStatus();
+
+  // Filter & Sort states
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [tone, setTone] = useState("");
+  const [sort, setSort] = useState("newest");
 
   useEffect(() => {
     axiosSecure
@@ -23,13 +29,46 @@ const PublicLessons = () => {
       });
   }, [axiosSecure]);
 
-if (loading ) {
-  return (
-    <div className="flex justify-center items-center h-64">
-      <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
-  );
-}
+  const filteredLessons = useMemo(() => {
+    let filtered = [...lessons];
+
+    // 🔍 Search Filter
+    if (search) {
+      filtered = filtered.filter((lesson) =>
+        lesson.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    // 📂 Category Filter
+    if (category) {
+      filtered = filtered.filter((lesson) => lesson.category === category);
+    }
+
+    // 💭 Tone Filter
+    if (tone) {
+      filtered = filtered.filter((lesson) => lesson.tone === tone);
+    }
+
+    // 🔄 Sort
+    if (sort === "newest") {
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (sort === "mostSaved") {
+      filtered.sort((a, b) => (b.favoritesCount || 0) - (a.favoritesCount || 0));
+    }
+
+    return filtered;
+  }, [lessons, search, category, tone, sort]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
+  const uniqueCategories = [...new Set(lessons.map((l) => l.category))];
+  const uniqueTones = [...new Set(lessons.map((l) => l.tone))];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
@@ -37,13 +76,61 @@ if (loading ) {
         🌍 Browse Public Life Lessons
       </h1>
 
-      {lessons.length === 0 ? (
-        <p className="text-center text-gray-500">
-          No public lessons available yet.
-        </p>
+      {/* 🔍 Search + Filter + Sort Bar */}
+      <div className="flex flex-wrap gap-4 justify-center mb-10">
+        {/* Search */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search by title..."
+            className="input input-bordered pr-10"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <FaSearch className="absolute right-3 top-3 text-gray-400" />
+        </div>
+
+        {/* Category Filter */}
+        <select
+          className="select select-bordered"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">All Categories</option>
+          {uniqueCategories.map((cat) => (
+            <option key={cat}>{cat}</option>
+          ))}
+        </select>
+
+        {/* Tone Filter */}
+        <select
+          className="select select-bordered"
+          value={tone}
+          onChange={(e) => setTone(e.target.value)}
+        >
+          <option value="">All Tones</option>
+          {uniqueTones.map((t) => (
+            <option key={t}>{t}</option>
+          ))}
+        </select>
+
+        {/* Sort Option */}
+        <select
+          className="select select-bordered"
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+        >
+          <option value="newest">Newest</option>
+          <option value="mostSaved">Most Saved</option>
+        </select>
+      </div>
+
+      {/* 🧾 Lessons Grid */}
+      {filteredLessons.length === 0 ? (
+        <p className="text-center text-gray-500">No lessons found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {lessons.map((lesson) => {
+          {filteredLessons.map((lesson) => {
             const isLocked = lesson.accessLevel === "Premium" && !isPremium;
 
             return (
@@ -53,7 +140,6 @@ if (loading ) {
                   isLocked ? "overflow-hidden" : ""
                 }`}
               >
-
                 {/* Card Body */}
                 <div className={`card-body ${isLocked ? "blur-sm" : ""}`}>
                   <h2 className="card-title text-lg">{lesson.title}</h2>
@@ -99,7 +185,8 @@ if (loading ) {
 
                   {/* Details Button */}
                   <div className="card-actions justify-end mt-4">
-                    <Link to={`/public-lessons/${lesson._id}`}
+                    <Link
+                      to={`/public-lessons/${lesson._id}`}
                       className={`btn btn-sm ${
                         isLocked
                           ? "btn-disabled cursor-not-allowed"
@@ -121,7 +208,7 @@ if (loading ) {
                     <p className="text-sm text-gray-600">
                       Upgrade to view this content
                     </p>
-                    <Link to="/upgrade" className="btn ">
+                    <Link to="/upgrade" className="btn btn-sm mt-2">
                       Upgrade
                     </Link>
                   </div>
