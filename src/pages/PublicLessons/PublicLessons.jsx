@@ -10,12 +10,15 @@ const PublicLessons = () => {
   const [loading, setLoading] = useState(true);
   const { isPremium } = useUserStatus();
 
-  // Filter & Sort states
+  // Filter & Sort & Pagination States
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [tone, setTone] = useState("");
   const [sort, setSort] = useState("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const lessonsPerPage = 6; // ✅ show 6 lessons per page
 
+  // Load all public lessons
   useEffect(() => {
     axiosSecure
       .get("/public-lessons")
@@ -29,6 +32,7 @@ const PublicLessons = () => {
       });
   }, [axiosSecure]);
 
+  // Filter + Search + Sort Logic
   const filteredLessons = useMemo(() => {
     let filtered = [...lessons];
 
@@ -40,14 +44,10 @@ const PublicLessons = () => {
     }
 
     // 📂 Category Filter
-    if (category) {
-      filtered = filtered.filter((lesson) => lesson.category === category);
-    }
+    if (category) filtered = filtered.filter((l) => l.category === category);
 
     // 💭 Tone Filter
-    if (tone) {
-      filtered = filtered.filter((lesson) => lesson.tone === tone);
-    }
+    if (tone) filtered = filtered.filter((l) => l.tone === tone);
 
     // 🔄 Sort
     if (sort === "newest") {
@@ -58,6 +58,14 @@ const PublicLessons = () => {
 
     return filtered;
   }, [lessons, search, category, tone, sort]);
+
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredLessons.length / lessonsPerPage);
+  const startIndex = (currentPage - 1) * lessonsPerPage;
+  const paginatedLessons = filteredLessons.slice(
+    startIndex,
+    startIndex + lessonsPerPage
+  );
 
   if (loading) {
     return (
@@ -85,7 +93,10 @@ const PublicLessons = () => {
             placeholder="Search by title..."
             className="input input-bordered pr-10"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
           />
           <FaSearch className="absolute right-3 top-3 text-gray-400" />
         </div>
@@ -94,7 +105,10 @@ const PublicLessons = () => {
         <select
           className="select select-bordered"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">All Categories</option>
           {uniqueCategories.map((cat) => (
@@ -106,7 +120,10 @@ const PublicLessons = () => {
         <select
           className="select select-bordered"
           value={tone}
-          onChange={(e) => setTone(e.target.value)}
+          onChange={(e) => {
+            setTone(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">All Tones</option>
           {uniqueTones.map((t) => (
@@ -126,11 +143,11 @@ const PublicLessons = () => {
       </div>
 
       {/* 🧾 Lessons Grid */}
-      {filteredLessons.length === 0 ? (
+      {paginatedLessons.length === 0 ? (
         <p className="text-center text-gray-500">No lessons found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredLessons.map((lesson) => {
+          {paginatedLessons.map((lesson) => {
             const isLocked = lesson.accessLevel === "Premium" && !isPremium;
 
             return (
@@ -216,6 +233,31 @@ const PublicLessons = () => {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* 📄 Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-3 mt-10">
+          <button
+            className="btn btn-sm"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
+            Previous
+          </button>
+
+          <span className="font-semibold">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            className="btn btn-sm"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
