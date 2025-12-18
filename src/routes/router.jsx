@@ -41,7 +41,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "upgrade",
-        Component: Upgrade,
+        element: (
+          <PrivateRoute>
+            <Upgrade></Upgrade>
+          </PrivateRoute>
+        ),
       },
       {
         path: "payment/:email",

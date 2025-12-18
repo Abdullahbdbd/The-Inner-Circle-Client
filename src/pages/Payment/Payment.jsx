@@ -31,28 +31,42 @@ const Payment = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-6">
-      <h2 className="text-3xl font-bold">Upgrade to Premium 🌟</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-green-50 flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+        {/* Decorative gradient blobs */}
+        <div className="absolute -top-16 -left-16 w-40 h-40 bg-gradient-to-br from-blue-400 via-teal-400 to-green-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+        <div className="absolute -bottom-16 -right-16 w-40 h-40 bg-gradient-to-br from-green-400 via-teal-400 to-blue-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
 
-      <div className="card bg-base-100 shadow-lg p-6 w-96 text-center">
-        <img
-          src={user?.photo}
-          alt={user?.displayName}
-          className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
-        />
-        <h3 className="text-xl font-semibold">{user?.displayName}</h3>
-        <p className="text-gray-600">{user?.email}</p>
+        {/* User Info */}
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <h2 className="text-2xl font-extrabold text-slate-800">
+            {user?.displayName}
+          </h2>
+          <p className="text-gray-500 mb-6">{user?.email}</p>
 
-        <div className="divider"></div>
+          {/* Payment Card */}
+          <div className="w-full bg-gradient-to-br from-blue-500 via-teal-400 to-green-400 rounded-2xl p-1 mb-6">
+            <div className="bg-white rounded-2xl p-6 text-center shadow-lg">
+              <h3 className="text-lg font-semibold text-teal-600 mb-2">
+                Premium Plan
+              </h3>
+              <p className="text-gray-700 mb-4">
+                Lifetime access to <span className="font-bold">Premium</span> plan
+              </p>
+              <div className="text-3xl font-bold text-teal-600 mb-4">৳1500</div>
+              <button
+                onClick={handlePayment}
+                className="w-full py-3 rounded-full font-semibold text-white bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 hover:scale-105 transition-transform"
+              >
+                Pay Now
+              </button>
+            </div>
+          </div>
 
-        <p className="text-gray-700 mb-3">
-          Lifetime access to <span className="font-bold">Premium</span> plan —
-          ৳1500
-        </p>
-
-        <button onClick={handlePayment} className="btn btn-primary w-full">
-          💳 Pay Now
-        </button>
+          <p className="text-sm text-gray-400">
+            Secure checkout powered by Stripe
+          </p>
+        </div>
       </div>
     </div>
   );
