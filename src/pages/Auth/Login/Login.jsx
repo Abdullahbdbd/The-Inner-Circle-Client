@@ -18,7 +18,7 @@ const Login = () => {
     signInUser(data.email, data.password)
       .then((res) => {
         console.log(res.user);
-        navigate(location?.state || "/");
+        navigate(location.state?.from || "/", { replace: true });
       })
       .catch((err) => {
         console.log(err.message);
@@ -64,9 +64,7 @@ const Login = () => {
               })}
             />
             {errors.password?.type === "required" && (
-              <p className="text-red-500 text-sm mt-1">
-                Password is required
-              </p>
+              <p className="text-red-500 text-sm mt-1">Password is required</p>
             )}
             {errors.password?.type === "minLength" && (
               <p className="text-red-500 text-sm mt-1">

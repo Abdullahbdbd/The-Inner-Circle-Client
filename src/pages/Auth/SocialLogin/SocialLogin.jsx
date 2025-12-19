@@ -24,7 +24,7 @@ const SocialLogin = () => {
         axiosSecure.post("/users", userInfo).then((res) => {
           if (res.data.insertedId) {
             toast.success("User created in the database");
-            navigate(location?.state || "/");
+            navigate(location.state?.from || "/", { replace: true });
           }
         });
       })

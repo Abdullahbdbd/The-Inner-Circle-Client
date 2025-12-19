@@ -1,39 +1,88 @@
-.banner-container {
-  width: 100%;
-  height: 100vh; /* full screen */
+.swiper-pagination-bullet {
+  background: white !important;
+  height: 10px;
+  width: 10px;
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+  background: #2dd4bf !important;
+  width: 30px;
+  border-radius: 5px;
+  opacity: 1;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+  opacity: 0.3;
+  transition: 0.3s;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
+}
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
 }
 
-.mySwiper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
+/* Uiverse Styled Button Custom CSS */
+.uiverse-upgrade-btn {
+  background: transparent;
+  position: relative;
+  padding: 6px 16px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: relative;
-}
-
-.slide-content {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.slide-content img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.slide-title {
-  position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  font-size: 3rem;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #2dd4bf;
+  border-radius: 10px;
+  outline: none;
+  overflow: hidden;
+  color: #2dd4bf;
+  transition: color 0.3s 0.1s ease-out;
   text-align: center;
 }
+
+.uiverse-upgrade-btn span {
+  margin: 10px;
+}
+
+.uiverse-upgrade-btn::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  content: "";
+  border-radius: 50%;
+  display: block;
+  width: 20em;
+  height: 20em;
+  left: -5em;
+  text-align: center;
+  transition: box-shadow 0.5s ease-out;
+  z-index: -1;
+}
+
+.uiverse-upgrade-btn:hover {
+  color: #fff;
+  border: 1px solid #2dd4bf;
+}
+
+.uiverse-upgrade-btn:hover::before {
+  box-shadow: inset 0 0 0 10em #2dd4bf;
+}
+
+.link-hover:hover .absolute:first-child {
+  transform: translate(150%, -150%);
+}
+
+.link-hover:hover .absolute:last-child {
+  transform: translate(0);
+}
+

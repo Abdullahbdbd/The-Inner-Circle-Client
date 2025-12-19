@@ -54,7 +54,7 @@ const Register = () => {
           updateUserProfile(userProfile)
             .then(() => {
               console.log("user profile updated");
-              navigate(location?.state || "/");
+              navigate("/", { replace: true });
             })
             .catch((err) => console.log(err.message));
         });
@@ -69,7 +69,10 @@ const Register = () => {
           Create Account
         </h2>
 
-        <form onSubmit={handleSubmit(handleRegistration)} className="space-y-5 mt-7">
+        <form
+          onSubmit={handleSubmit(handleRegistration)}
+          className="space-y-5 mt-7"
+        >
           {/* Name field */}
           <div>
             <label className="block text-sm font-semibold text-slate-600 mb-1">
@@ -129,8 +132,7 @@ const Register = () => {
               {...register("password", {
                 required: true,
                 minLength: 6,
-                pattern:
-                  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
+                pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
               })}
             />
             {errors.password?.type === "required" && (
