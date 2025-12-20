@@ -12,9 +12,11 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 
 // Assets
-import banner1 from "../../../assets/banner1.jpg";
-import banner2 from "../../../assets/banner2.jpg";
-import banner3 from "../../../assets/banner3.jpg";
+import banner3 from "../../../assets/banner1.jpg";
+import banner1 from "../../../assets/banner3.jpg";
+import banner2 from "../../../assets/banner4.jpg";
+import banner5 from "../../../assets/banner5.jpg";
+import banner6 from "../../../assets/banner6.jpg";
 
 const slides = [
   {
@@ -35,6 +37,18 @@ const slides = [
     author: "Maya Bennett",
     img: banner3,
   },
+  {
+    title: "Evolve Through Insights.",
+    desc: "Transform your perspective by learning from the triumphs and trials of others. Knowledge is the only asset that grows when shared.",
+    author: "Isabella Chen",
+    img: banner5,
+  },
+  {
+    title: "Legacy in Every Story.",
+    desc: "Your journey matters. Document your life's milestones and create a lasting legacy for those who follow in your footsteps.",
+    author: "Marcus Aurelius",
+    img: banner6,
+  },
 ];
 
 const Banner = () => {
@@ -53,6 +67,7 @@ const Banner = () => {
           <SwiperSlide key={index}>
             <div className="relative w-full h-full flex items-center justify-center">
               {/* background Image with Sharpness Filter */}
+              
               <div
                 className="absolute inset-0 transition-transform duration-[5000ms] scale-110"
                 style={{

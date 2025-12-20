@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { motion } from "framer-motion";
+import { FaBookmark, FaArrowRight, FaHeart } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MostSavedLessons = () => {
@@ -11,7 +13,7 @@ const MostSavedLessons = () => {
     const fetchMostSaved = async () => {
       try {
         const res = await axiosSecure.get("/most-saved-lessons");
-        setLessons(res.data);
+        setLessons(res.data.slice(0, 4));
       } catch (err) {
         console.error(err);
       } finally {
@@ -24,39 +26,92 @@ const MostSavedLessons = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner text-primary loading-lg"></span>
+        <span className="loading loading-spinner text-teal-500 loading-lg"></span>
       </div>
     );
 
   if (lessons.length === 0) return null;
 
   return (
-    <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-8">💖 Most Saved Lessons</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {lessons.map((lesson) => (
-            <div
+    <section className="py-24 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Header Section - Color Matched */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6 text-center md:text-left border-l-4 border-teal-500 pl-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-5xl font-black text-slate-800 mb-3">
+               Community <span className="text-teal-500">Favorites</span>
+            </h2>
+            <p className="text-slate-500 max-w-lg text-base">
+              The lessons that resonated most with our community. Highly saved and valued wisdom.
+            </p>
+          </motion.div>
+          
+         <Link 
+          to="/public-lessons" 
+          className="group text-teal-600 font-semibold flex items-center gap-2 hover:text-teal-700 transition-colors"
+        >
+          View All <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
+        </Link>
+        </div>
+
+        {/* Horizontal Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {lessons.map((lesson, i) => (
+            <motion.div
               key={lesson._id}
-              className="card bg-base-100 shadow-md border border-base-300 hover:shadow-lg transition p-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -5 }}
+              className="relative group bg-white border border-slate-100 rounded-[2rem] p-8 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-500 flex flex-col sm:flex-row gap-6 items-center sm:items-start shadow-sm"
             >
-              <h3 className="font-semibold text-lg mb-2">{lesson.title}</h3>
-              <p className="text-sm text-gray-600">
-                {lesson.description.slice(0, 100)}...
-              </p>
-              <div className="flex justify-between items-center mt-3 text-sm">
-                <span className="badge badge-outline">{lesson.category}</span>
-                <span className="badge badge-outline">{lesson.favoritesCount || 0} ❤️</span>
+              {/* Bookmark Sticker Style */}
+              <div className="absolute -top-3 -right-3 bg-gradient-to-br from-teal-400 to-emerald-500 p-4 rounded-2xl rotate-12 shadow-lg group-hover:rotate-0 transition-transform duration-500">
+                <FaBookmark className="text-xl text-white" />
               </div>
-              <div className="card-actions justify-end mt-4">
+
+              {/* Lesson Stats Box - Teal Theme */}
+              <div className="flex-shrink-0 flex flex-col items-center justify-center w-24 h-24 bg-teal-50 rounded-[1.5rem] border border-teal-100 transition-all duration-300">
+                 <FaHeart className="text-rose-500 mb-1 group-hover:animate-ping" />
+                 <span className="text-2xl font-black text-teal-700 leading-none tracking-tighter">
+                    {lesson.favoritesCount || 0}
+                 </span>
+                 <span className="text-[9px] font-bold uppercase tracking-widest text-teal-600">Saves</span>
+              </div>
+
+              {/* Lesson Content */}
+              <div className="flex-grow text-center sm:text-left">
+                <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-4">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-teal-600 px-3 py-1 bg-teal-50 rounded-full border border-teal-100">
+                    {lesson.category}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-3 py-1 bg-slate-50 rounded-full">
+                    {lesson.tone || "General"}
+                  </span>
+                </div>
+                
+                <h3 className="text-2xl font-black text-slate-800 mb-3 transition-colors line-clamp-1 leading-tight">
+                  {lesson.title}
+                </h3>
+                
+                <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                  {lesson.description}
+                </p>
+
                 <Link
                   to={`/public-lessons/${lesson._id}`}
-                  className="btn btn-sm btn-primary"
+                  className="inline-flex items-center gap-2 font-bold text-teal-600 group-hover:underline decoration-2 underline-offset-4 transition-all"
                 >
-                  See Details
+                  Read Lesson <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -86,3 +86,47 @@
   transform: translate(0);
 }
 
+/* Uiverse Styled Button Custom CSS */
+.uiverse-upgrade-btn {
+  background: transparent;
+  position: relative;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #2dd4bf;
+  border-radius: 10px;
+  outline: none;
+  overflow: hidden;
+  color: #2dd4bf;
+  transition: color 0.3s 0.1s ease-out;
+  text-align: center;
+}
+
+.uiverse-upgrade-btn::before {
+  position: absolute;
+  top: 0;
+  left: -5em;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  content: "";
+  border-radius: 50%;
+  display: block;
+  width: 20em;
+  height: 20em;
+  transition: box-shadow 0.5s ease-out;
+  z-index: -1;
+}
+
+.uiverse-upgrade-btn:hover {
+  color: #fff;
+  border: 1px solid #2dd4bf;
+}
+
+.uiverse-upgrade-btn:hover::before {
+  box-shadow: inset 0 0 0 10em #2dd4bf;
+}
