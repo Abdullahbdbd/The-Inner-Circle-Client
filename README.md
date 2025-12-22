@@ -1,25 +1,49 @@
-# 🌟 Digital Life Lessons | Preserve & Share Human Wisdom
+# 🌟 Digital Life Lessons
 
-**Live Site:** [Your Live Link Here](https://your-project-link.web.app)
+**Live Site:** [https://the-inner-circle-55b1a.web.app/]  
+**Platform Theme:** A sanctuary for preserving personal wisdom and sharing life's most meaningful insights.
 
-Digital Life Lessons is a modern full-stack web application designed to help users document, organize, and share meaningful life lessons, personal growth insights, and gathered wisdom. From private reflections to premium community insights, this platform serves as a digital sanctuary for personal development.
+---
+
+## 📖 Introduction
+People often learn valuable lessons but forget them over time. **Digital Life Lessons** is a comprehensive platform where users can create, organize, and explore life-changing wisdom. Built with a robust full-stack architecture, it offers a seamless experience for personal reflection and community learning.
 
 ## 🚀 Key Features
 
--   **Dual-Tier Content System:** Lessons are categorized into Free and Premium tiers. Premium content remains exclusive to upgraded members, with a sleek blur-effect preview for free users.
--   **Interactive Dashboard:** Separate, feature-rich dashboards for Admins (to moderate and analyze) and Users (to manage their personal contributions).
--   **Dynamic Discovery:** Advanced search, filtering by emotional tone (Motivational, Gratitude, etc.), and category-based sorting to find the right wisdom at the right time.
--   **Secure Payments:** Integrated with **Stripe** for seamless one-time lifetime premium upgrades.
--   **Community Engagement:** React to lessons, leave meaningful comments, report inappropriate content, and share wisdom directly to social media using **React Share**.
+-   **Plan-Based Visibility:** Content is protected by "Free" and "Premium" access levels. Premium content features a professional blur-effect preview for non-paid users.
+-   **Interactive Engagement:** Real-time Like/Unlike system, Favorite lists, and an integrated Reporting system for community moderation.
+-   **Advanced Discovery:** Robust filtering by 5+ categories, 4+ emotional tones, and keyword-based search.
+-   **Stripe Integration:** Secure lifetime premium upgrade via Stripe Payment Gateway.
+-   **Community Growth:** Social media sharing using `react-share` and interactive comment sections.
+-   **Responsive Design:** Fully optimized for Mobile, Tablet, and Desktop with a modern Glassmorphism UI.
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Dependencies
+-   **Core:** React 19, React Router 7, Tailwind CSS 4.
+-   **Data Fetching:** TanStack Query (React Query) for caching and performance.
+-   **Form & Validation:** React Hook Form for optimized data entry.
+-   **UI & UX:** -   `framer-motion` & `Lottie React` for smooth animations.
+    -   `Swiper` for dynamic hero sliders.
+    -   `Recharts` for dashboard analytics visualization.
+    -   `SweetAlert2` & `React Toastify` for professional feedback.
 
--   **Frontend:** React 19, React Router 7, Tailwind CSS 4 (Vite)
--   **State Management:** TanStack Query (React Query)
--   **Authentication:** Firebase Auth (Google & Email/Password)
--   **Animations:** Framer Motion & Lottie React
--   **Form Handling:** React Hook Form
--   **Notifications:** SweetAlert2 & React Toastify
+---
+
+## 🖥️ Dashboard Overview
+
+### 👤 User Dashboard
+-   **Home:** Quick overview of total lessons, favorites, and activity charts.
+-   **Add Lesson:** A secure form to create lessons with Title, Story, Category, Emotional Tone, and Image. (Premium level is restricted to upgraded users).
+-   **My Lessons:** Tabular view to edit, delete, or toggle visibility (Public/Private) and access levels.
+-   **My Favorites:** A curated collection of saved wisdom with filtering options.
+-   **Profile:** Manage personal info, view a grid of all self-created public lessons, and "Premium ⭐" badge.
+
+### 🛡️ Admin Dashboard
+-   **Overview:** Platform-wide analytics (Total users, Lessons, and growth graphs).
+-   **User Management:** Monitor all registered users and promote/manage roles.
+-   **Manage Lessons:** Review all platform content, mark featured lessons, and delete inappropriate entries.
+-   **Report Logs:** Tabular list of community-flagged lessons with reasons; Admin can delete or ignore reports.
+
+---
 
 ## 📦 Installation & Setup
 
