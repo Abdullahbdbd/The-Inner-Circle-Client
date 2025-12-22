@@ -1,49 +1,49 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import useAuth from './useAuth';
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
+import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:3000'
-})
+  baseURL: "https://the-inner-circle-server.vercel.app",
+});
 
 const useAxiosSecure = () => {
-    const { user, logOut } = useAuth();
-    const navigate = useNavigate();
+  const { user, logOut } = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // intercept request
-        const reqInterceptor = axiosSecure.interceptors.request.use(config => {
-            config.headers.Authorization = `Bearer ${user?.accessToken}`
-            return config
-        })
+  useEffect(() => {
+    // intercept request
+    const reqInterceptor = axiosSecure.interceptors.request.use((config) => {
+      config.headers.Authorization = `Bearer ${user?.accessToken}`;
+      return config;
+    });
 
-        // interceptor response
-        const resInterceptor = axiosSecure.interceptors.response.use((response) => {
-            return response;
-        }, (error) => {
-            console.log(error);
+    // interceptor response
+    const resInterceptor = axiosSecure.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        console.log(error);
 
-            const statusCode = error.status;
-            if (statusCode === 401 || statusCode === 403) {
-                logOut()
-                    .then(() => {
-                        navigate('/login')
-                    })
-            }
-
-
-            return Promise.reject(error);
-        })
-
-        return () => {
-            axiosSecure.interceptors.request.eject(reqInterceptor);
-            axiosSecure.interceptors.response.eject(resInterceptor);
+        const statusCode = error.status;
+        if (statusCode === 401 || statusCode === 403) {
+          logOut().then(() => {
+            navigate("/login");
+          });
         }
 
-    }, [user, logOut, navigate])
+        return Promise.reject(error);
+      }
+    );
 
-    return axiosSecure;
+    return () => {
+      axiosSecure.interceptors.request.eject(reqInterceptor);
+      axiosSecure.interceptors.response.eject(resInterceptor);
+    };
+  }, [user, logOut, navigate]);
+
+  return axiosSecure;
 };
 
 export default useAxiosSecure;

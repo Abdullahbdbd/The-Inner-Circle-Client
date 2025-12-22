@@ -1,16 +1,46 @@
-# React + Vite
+# 🌟 Digital Life Lessons | Preserve & Share Human Wisdom
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** [Your Live Link Here](https://your-project-link.web.app)
 
-Currently, two official plugins are available:
+Digital Life Lessons is a modern full-stack web application designed to help users document, organize, and share meaningful life lessons, personal growth insights, and gathered wisdom. From private reflections to premium community insights, this platform serves as a digital sanctuary for personal development.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features
 
-## React Compiler
+-   **Dual-Tier Content System:** Lessons are categorized into Free and Premium tiers. Premium content remains exclusive to upgraded members, with a sleek blur-effect preview for free users.
+-   **Interactive Dashboard:** Separate, feature-rich dashboards for Admins (to moderate and analyze) and Users (to manage their personal contributions).
+-   **Dynamic Discovery:** Advanced search, filtering by emotional tone (Motivational, Gratitude, etc.), and category-based sorting to find the right wisdom at the right time.
+-   **Secure Payments:** Integrated with **Stripe** for seamless one-time lifetime premium upgrades.
+-   **Community Engagement:** React to lessons, leave meaningful comments, report inappropriate content, and share wisdom directly to social media using **React Share**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+-   **Frontend:** React 19, React Router 7, Tailwind CSS 4 (Vite)
+-   **State Management:** TanStack Query (React Query)
+-   **Authentication:** Firebase Auth (Google & Email/Password)
+-   **Animations:** Framer Motion & Lottie React
+-   **Form Handling:** React Hook Form
+-   **Notifications:** SweetAlert2 & React Toastify
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Installation & Setup
+
+1.  Clone the repository:
+    ```bash
+    git clone [https://github.com/your-username/digital-life-lessons-client.git](https://github.com/your-username/digital-life-lessons-client.git)
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Create a `.env.local` file and add your Firebase and Stripe keys:
+    ```env
+    VITE_apiKey=your_api_key
+    VITE_authDomain=your_auth_domain
+    ...
+    ```
+4.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+
+## 📜 Dependencies
+`@tanstack/react-query`, `firebase`, `framer-motion`, `axios`, `react-router`, `react-share`, `sweetalert2`, `swiper`, `recharts`, `tailwindcss`.
