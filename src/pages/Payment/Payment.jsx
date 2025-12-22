@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import LoadingPage from "../../component/LoadingPage/LoadingPage";
 
 const Payment = () => {
   const { email } = useParams();
@@ -27,7 +28,7 @@ const Payment = () => {
   };
 
   if (isLoading) {
-    return <h1 className="text-center mt-10 text-lg">Loading...</h1>;
+    return <LoadingPage></LoadingPage>;
   }
 
   return (

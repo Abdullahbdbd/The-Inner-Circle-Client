@@ -21,6 +21,8 @@ import AdminRoute from "./AdminRoute";
 import AdminDashboardHome from "../pages/Dashboard/AdminDashboardHome/AdminDashboardHome";
 import ManageLessons from "../pages/Dashboard/ManageLessons/ManageLessons";
 import ReportedLessons from "../pages/Dashboard/ReportedLessons/ReportedLessons";
+import AuthorProfile from "../pages/DetailsPages/AuthorProfile/AuthorProfile";
+import NotFoundPage from "../component/NotFoundPage/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
@@ -37,8 +39,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "public-lessons/:id",
-        Component: DetailsPage,
+        element: (
+          <PrivateRoute>
+            <DetailsPage></DetailsPage>
+          </PrivateRoute>
+        ),
       },
+      {
+        path: "/author/:email",
+        element: <PrivateRoute><AuthorProfile></AuthorProfile></PrivateRoute>,
+      },
+
       {
         path: "upgrade",
         element: (
@@ -67,6 +78,10 @@ export const router = createBrowserRouter([
         path: "register",
         Component: Register,
       },
+      {
+        path:"*",
+        Component:NotFoundPage
+      }
     ],
   },
   {

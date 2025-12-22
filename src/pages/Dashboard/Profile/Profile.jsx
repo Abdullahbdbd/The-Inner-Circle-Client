@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaEdit, FaCrown, FaCheckCircle } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import useRole from "../../../hooks/useRole";
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const { user, updateUserProfile } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [isEditing, setIsEditing] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
   const { role } = useRole();
 
-  // Load user info from MongoDB
-  const { data: dbUser = {}, refetch } = useQuery({
+  const [isEditing, setIsEditing] = useState(false);
+  const [sortBy, setSortBy] = useState("newest"); // newest or popular
+  const { register, handleSubmit, reset } = useForm();
+
+  // Load user info
+  const { data: dbUser = {}, refetch: refetchUser } = useQuery({
     queryKey: ["user", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/${user.email}`);
@@ -24,164 +27,252 @@ const Profile = () => {
     },
   });
 
-  // Handle update
+  const { data: myLessons = [] } = useQuery({
+    queryKey: ["my-lessons", user?.email, sortBy],
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/my-lessons?email=${user.email}&sort=${
+          sortBy === "popular" ? "mostSaved" : "newest"
+        }`
+      );
+      return res.data;
+    },
+  });
+
   const handleUpdate = async (data) => {
     try {
-      await axiosSecure.patch(`/users/${user.email}`, data);
+      await axiosSecure.patch(`/users/profile/${user.email}`, data);
       await updateUserProfile({
         displayName: data.displayName,
         photoURL: data.photoURL,
       });
       toast.success("Profile updated successfully!");
       setIsEditing(false);
-      refetch();
+      refetchUser();
     } catch (err) {
-      toast.error("Update failed!", err.message);
+      toast.error("Update failed!");
     }
   };
-
-  // User lessons & favorites count
-  const { data: myLessons = [] } = useQuery({
-    queryKey: ["my-lessons", user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/my-lessons?email=${user.email}`);
-      return res.data;
-    },
-  });
 
   const lessonsCount = myLessons.length;
   const totalFavorites = myLessons.reduce(
     (acc, lesson) => acc + (lesson.favoritesCount || 0),
     0
   );
-
-  // Filter user's public lessons only
   const publicLessons = myLessons.filter((l) => l.privacy === "Public");
 
   return (
-    <div className="p-8">
-      <h2 className="text-3xl font-bold text-center mb-8">
-        {role === "admin" ? "👑 Admin Profile" : "👤 My Profile"}
-      </h2>
+    <div className="min-h-screen bg-[#f8fafc] py-12">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* --- Left Column: Profile Card --- */}
+          <div className="lg:col-span-4 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm relative overflow-hidden"
+            >
+              {/* Decorative Background */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-teal-50 rounded-bl-[4rem] -z-0 opacity-50"></div>
 
-      {/* Profile Card */}
-      <div className="card bg-base-100 shadow-xl w-full max-w-2xl mx-auto p-6 border border-base-300">
-        <div className="flex flex-col md:flex-row gap-6 items-center">
-          {/* Avatar */}
-          <div className="avatar">
-            <div className="w-28 h-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-              <img
-                src={dbUser.photoURL || user?.photoURL || "/default-avatar.png"}
-                alt="profile"
-              />
-            </div>
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="relative mb-6">
+                  <img
+                    src={
+                      dbUser.photoURL || user?.photoURL || "/default-avatar.png"
+                    }
+                    alt="profile"
+                    className="w-28 h-28 rounded-[2rem] object-cover ring-4 ring-slate-50 shadow-md"
+                  />
+                  {role === "admin" ? (
+                    <div className="absolute -bottom-2 -right-2 bg-amber-500 text-white p-2 rounded-xl shadow-lg border-2 border-white">
+                      <FaCrown size={12} />
+                    </div>
+                  ) : (
+                    dbUser.isPremium && (
+                      <div className="absolute -bottom-2 -right-2 bg-teal-600 text-white p-2 rounded-xl shadow-lg border-2 border-white">
+                        <FaStar size={12} />
+                      </div>
+                    )
+                  )}
+                </div>
+
+                <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                  {dbUser.displayName || user.displayName}
+                  <FaCheckCircle className="text-teal-500 size-4" />
+                </h3>
+                <p className="text-slate-400 text-xs font-bold mt-1 uppercase tracking-tighter">
+                  {user.email}
+                </p>
+
+                <div className="flex gap-2 mt-4">
+                  {role === "admin" && (
+                    <span className="bg-amber-50 text-amber-600 text-[9px] font-black uppercase px-3 py-1 rounded-md border border-amber-100">
+                      Admin
+                    </span>
+                  )}
+                  {dbUser.isPremium && (
+                    <span className="bg-teal-50 text-teal-600 text-[9px] font-black uppercase px-3 py-1 rounded-md border border-teal-100">
+                      Premium
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="w-full mt-8 flex items-center justify-center gap-2 bg-slate-900 text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all"
+                >
+                  <FaEdit /> Edit Profile
+                </button>
+              </div>
+            </motion.div>
+
+            {/* --- Stats Card --- */}
+            {role === "user" && (
+              <div className="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm flex justify-around">
+                <div className="text-center">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                    Lessons
+                  </p>
+                  <p className="text-xl font-black text-slate-800">
+                    {lessonsCount}
+                  </p>
+                </div>
+                <div className="w-[1px] bg-slate-100 h-10 my-auto"></div>
+                <div className="text-center">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                    Hearts
+                  </p>
+                  <p className="text-xl font-black text-slate-800">
+                    {totalFavorites}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Info */}
-          <div className="flex-1 space-y-2 text-center md:text-left">
-            <h3 className="text-2xl font-semibold flex items-center justify-center md:justify-start gap-2">
-              {dbUser.displayName || user.displayName}
-              {role === "admin" ? (
-                <span className="text-warning flex items-center gap-1">
-                  👑 Admin
-                </span>
-              ) : (
-                dbUser.isPremium && (
-                  <span className="text-yellow-500 flex items-center gap-1">
-                    <FaStar /> Premium
-                  </span>
-                )
-              )}
-            </h3>
-            <p className="text-gray-500">{user.email}</p>
-            {role === "user" && (
-              <>
-                <p>Total Lessons: {lessonsCount}</p>
-                <p>Total Favorites: {totalFavorites}</p>
-              </>
-            )}
+          {/* --- Right Column: Public Lessons --- */}
+          <div className="lg:col-span-8">
+            <div className="flex items-center gap-4 mb-4">
+              <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">
+                Public Contributions
+              </h3>
 
-            <button
-              className="btn btn-outline btn-sm mt-3"
-              onClick={() => setIsEditing(true)}
-            >
-              Edit Profile
-            </button>
+              {/* Sorting Buttons */}
+              <div className="ml-auto flex gap-2">
+                <button
+                  onClick={() => setSortBy("newest")}
+                  className={`px-4 py-2 rounded-xl font-bold text-xs ${
+                    sortBy === "newest"
+                      ? "bg-teal-600 text-white"
+                      : "bg-slate-100"
+                  }`}
+                >
+                  Newest
+                </button>
+                <button
+                  onClick={() => setSortBy("popular")}
+                  className={`px-4 py-2 rounded-xl font-bold text-xs ${
+                    sortBy === "popular"
+                      ? "bg-teal-600 text-white"
+                      : "bg-slate-100"
+                  }`}
+                >
+                  Most Popular
+                </button>
+              </div>
+            </div>
+
+            {publicLessons.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-[2rem] border border-dashed border-slate-200">
+                <p className="text-slate-400 font-bold text-sm">
+                  No public lessons shared yet.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {publicLessons.map((lesson) => (
+                  <motion.div
+                    key={lesson._id}
+                    whileHover={{ y: -4 }}
+                    className="bg-white p-5 rounded-[1.8rem] border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col"
+                  >
+                    <div className="mb-4">
+                      <span className="text-[9px] font-black uppercase tracking-tighter px-2 py-1 bg-teal-50 text-teal-700 rounded-md">
+                        {lesson.category}
+                      </span>
+                    </div>
+                    <h4 className="text-base font-bold text-slate-800 mb-2 line-clamp-1">
+                      {lesson.title}
+                    </h4>
+                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-5">
+                      {lesson.description}
+                    </p>
+                    <div className="mt-auto pt-4 border-t border-slate-50 flex justify-between items-center">
+                      <span className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">
+                        {lesson.tone}
+                      </span>
+                      <span className="text-[9px] font-bold text-slate-300">
+                        {new Date(lesson.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* ✏️ Edit Modal */}
+      {/* --- Profile Update Modal --- */}
       {isEditing && (
-        <dialog id="edit_profile_modal" className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg mb-4">Update Profile</h3>
-            <form onSubmit={handleSubmit(handleUpdate)} className="space-y-3">
-              <input
-                {...register("displayName")}
-                placeholder="Display Name"
-                className="input input-bordered w-full"
-                defaultValue={dbUser.displayName}
-              />
-
-              <input
-                {...register("photoURL")}
-                placeholder="Photo URL"
-                className="input input-bordered w-full"
-                defaultValue={dbUser.photoURL}
-              />
-
-              <div className="modal-action">
-                <button type="submit" className="btn btn-primary">
-                  Update
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white w-full max-w-sm rounded-[2rem] p-8 shadow-2xl border border-slate-100"
+          >
+            <h3 className="text-xl font-black text-slate-800 mb-6">
+              Update Profile
+            </h3>
+            <form onSubmit={handleSubmit(handleUpdate)} className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-[9px] font-black text-slate-400 uppercase ml-2 tracking-widest">
+                  Full Name
+                </label>
+                <input
+                  {...register("displayName")}
+                  className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-teal-500/20 transition-all text-xs font-bold text-slate-700 outline-none"
+                  defaultValue={dbUser.displayName}
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[9px] font-black text-slate-400 uppercase ml-2 tracking-widest">
+                  Photo Link
+                </label>
+                <input
+                  {...register("photoURL")}
+                  className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-teal-500/20 transition-all text-xs font-bold text-slate-700 outline-none"
+                  defaultValue={dbUser.photoURL}
+                />
+              </div>
+              <div className="flex gap-2 pt-4">
+                <button
+                  type="submit"
+                  className="flex-1 bg-teal-600 text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-700 transition-all"
+                >
+                  Save
                 </button>
                 <button
                   type="button"
-                  className="btn"
                   onClick={() => setIsEditing(false)}
+                  className="px-6 py-3 bg-slate-100 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200"
                 >
-                  Cancel
+                  Close
                 </button>
               </div>
             </form>
-          </div>
-        </dialog>
-      )}
-
-      {/* 🧾 Public Lessons by this user */}
-      {role === "user" && (
-        <div className="mt-10">
-          <h3 className="text-2xl font-semibold mb-6 text-center">
-            🌟 My Public Lessons
-          </h3>
-
-          {publicLessons.length === 0 ? (
-            <p className="text-gray-500 text-center">
-              You haven’t published any public lessons yet.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {publicLessons.map((lesson) => (
-                <div
-                  key={lesson._id}
-                  className="card bg-base-100 shadow-md hover:shadow-lg transition border border-base-300"
-                >
-                  <div className="card-body">
-                    <h3 className="font-semibold text-lg">{lesson.title}</h3>
-                    <p className="text-sm text-gray-600">
-                      {lesson.description.slice(0, 100)}...
-                    </p>
-                    <div className="flex justify-between items-center mt-3 text-sm">
-                      <span className="badge badge-outline">
-                        {lesson.category}
-                      </span>
-                      <span className="badge badge-outline">{lesson.tone}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          </motion.div>
         </div>
       )}
     </div>

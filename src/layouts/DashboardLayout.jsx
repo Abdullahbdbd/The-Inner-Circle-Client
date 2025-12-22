@@ -4,115 +4,126 @@ import Logo from "../component/Logo/Logo";
 import { BiSolidBookAdd } from "react-icons/bi";
 import { FaBookBookmark, FaBookOpenReader } from "react-icons/fa6";
 import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
-import useRole from "../hooks/useRole";
 import { MdAdminPanelSettings, MdReport } from "react-icons/md";
 import { LuNotebookPen } from "react-icons/lu";
+import useRole from "../hooks/useRole";
+import ScrollToTop from "../component/ScrollToTop/ScrollToTop";
 
 const DashboardLayout = () => {
   const { role } = useRole();
+
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open bg-slate-950 text-slate-200 min-h-screen">
+      {/* Drawer Toggle */}
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
+
+      {/* Main Content */}
+      <div className="drawer-content flex flex-col">
         {/* Navbar */}
-        <nav className="navbar w-full bg-base-300">
-          <label
-            htmlFor="my-drawer-4"
-            aria-label="open sidebar"
-            className="btn btn-square btn-ghost"
-          >
-            {/* Sidebar toggle icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2"
-              fill="none"
-              stroke="currentColor"
-              className="my-1.5 inline-block size-4"
+        <nav className="flex items-center justify-between bg-slate-900/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-4 py-2 shadow-md">
+          <div className="flex items-center gap-2">
+            {/* Drawer toggle button */}
+            <label
+              htmlFor="my-drawer-4"
+              aria-label="open sidebar"
+              className="btn btn-ghost btn-sm text-slate-300 hover:text-teal-400"
             >
-              <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-              <path d="M9 4v16"></path>
-              <path d="M14 10l2 2l-2 2"></path>
-            </svg>
-          </label>
-          <div className="px-4">
-            <Link to="/">
-              {" "}
-              <Logo></Logo>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </label>
+
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2">
+              <Logo />
             </Link>
           </div>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl border border-teal-500/30 bg-teal-500/10 text-teal-400 font-bold hover:bg-teal-500 hover:text-white shadow-[0_0_15px_rgba(20,184,166,0.1)] transition-all duration-300"
+          >
+            <FaHome />
+            <span className="tracking-wide">Back To Home</span>
+          </Link>
         </nav>
-        {/* Page content here */}
-        <Outlet></Outlet>
+
+        {/* Page Content */}
+
+        <Outlet />
+
+        <ScrollToTop />
       </div>
 
+      {/* Sidebar Drawer */}
       <div className="drawer-side is-drawer-close:overflow-visible">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-          {/* Sidebar content here */}
-          <ul className="menu w-full grow">
+
+        <div className="flex min-h-full flex-col items-start bg-slate-900/95 backdrop-blur-md border-r border-slate-800 shadow-xl is-drawer-close:w-16 is-drawer-open:w-64 transition-all duration-300">
+          {/* Sidebar Content */}
+          <ul className="menu w-full grow pt-4">
+            {/* User Section */}
             {role === "user" && (
-              <>
-                {/* Home Section*/}
-                <li>
-                  <Link
-                    to="/dashboard"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Homepage"
-                  >
-                    {/* Home icon */}
-                    <FaHome />
-                    <span className="is-drawer-close:hidden">Homepage</span>
-                  </Link>
-                </li>
-              </>
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Homepage"
+                >
+                  <FaHome />
+                  <span className="is-drawer-close:hidden">Homepage</span>
+                </Link>
+              </li>
             )}
 
-            {/* Profile Section*/}
+            {/* Profile */}
             <li>
               <Link
                 to="/dashboard/profile"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Profile"
               >
-                {/* Profile icon */}
                 <FaUserCircle />
                 <span className="is-drawer-close:hidden">Profile</span>
               </Link>
             </li>
 
-            {/* admin route  */}
+            {/* Admin Routes */}
             {role === "admin" && (
               <>
-                {/* Admin Dashboard Home  */}
                 <li>
                   <Link
                     to="/dashboard/admin-summary"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Admin Dashboard Home"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Admin Dashboard"
                   >
-                    {/* Settings icon */}
                     <MdAdminPanelSettings />
                     <span className="is-drawer-close:hidden">
-                      Admin Dashboard Home
+                      Admin Dashboard
                     </span>
                   </Link>
                 </li>
 
-                {/* User Management Section */}
                 <li>
                   <Link
                     to="/dashboard/user-management"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="User Management"
                   >
-                    {/* Settings icon */}
                     <FaUsers />
                     <span className="is-drawer-close:hidden">
                       User Management
@@ -120,14 +131,12 @@ const DashboardLayout = () => {
                   </Link>
                 </li>
 
-                {/* Manage Lessons  Section */}
                 <li>
                   <Link
                     to="/dashboard/manage-lessons"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="Manage Lessons"
                   >
-                    {/* Settings icon */}
                     <LuNotebookPen />
                     <span className="is-drawer-close:hidden">
                       Manage Lessons
@@ -135,14 +144,12 @@ const DashboardLayout = () => {
                   </Link>
                 </li>
 
-                {/* Reported Lessons  Section */}
                 <li>
                   <Link
                     to="/dashboard/reported-lessons"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="Reported Lessons"
                   >
-                    {/* Settings icon */}
                     <MdReport />
                     <span className="is-drawer-close:hidden">
                       Reported Lessons
@@ -152,45 +159,45 @@ const DashboardLayout = () => {
               </>
             )}
 
-            {/* Add Lessons Section */}
+            {/* Add Lessons */}
             <li>
               <Link
                 to="/dashboard/add-lessons"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Add Lessons"
               >
-                {/* Settings icon */}
                 <BiSolidBookAdd />
                 <span className="is-drawer-close:hidden">Add Lessons</span>
               </Link>
             </li>
 
-            {/* My Lessons Section */}
+            {/* My Lessons */}
             <li>
               <Link
                 to="/dashboard/my-lessons"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="My Lessons"
               >
-                {/* Settings icon */}
                 <FaBookOpenReader />
                 <span className="is-drawer-close:hidden">My Lessons</span>
               </Link>
             </li>
 
-            {/* My Favorites Section */}
+            {/* My Favorites */}
             <li>
               <Link
                 to="/dashboard/my-favorites"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-teal-400 transition-all duration-300 is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="My Favorites"
               >
-                {/* Settings icon */}
                 <FaBookBookmark />
                 <span className="is-drawer-close:hidden">My Favorites</span>
               </Link>
             </li>
           </ul>
+
+          {/* Gradient Footer Line */}
+          <div className="h-[2px] bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 w-full"></div>
         </div>
       </div>
     </div>

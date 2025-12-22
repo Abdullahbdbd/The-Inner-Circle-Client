@@ -50,16 +50,16 @@ const Register = () => {
             displayName: data.name,
             photoURL: photoURL,
           };
+          toast.success('User has been created')
 
           updateUserProfile(userProfile)
             .then(() => {
-              console.log("user profile updated");
               navigate("/", { replace: true });
             })
             .catch((err) => console.log(err.message));
         });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => toast.error(err.message));
   };
 
   return (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { motion } from "framer-motion";
 import { FaAward, FaMedal, FaStar } from "react-icons/fa";
+import LoadingPage from "../../../component/LoadingPage/LoadingPage";
 
 const TopContributors = () => {
   const axiosSecure = useAxiosSecure();
@@ -24,9 +25,7 @@ const TopContributors = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner text-teal-500 loading-lg"></span>
-      </div>
+      <LoadingPage></LoadingPage>
     );
 
   if (contributors.length === 0) return null;

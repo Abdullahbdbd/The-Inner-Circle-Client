@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { FaHeart, FaBookmark, FaEye } from "react-icons/fa";
 
-
 const EngagementSection = ({ lesson }) => {
+  // Functionality preserved exactly as requested
   const views = useMemo(() => Math.floor(Math.random() * 10000), []);
 
   const formatNumber = (num) => {
@@ -10,40 +10,66 @@ const EngagementSection = ({ lesson }) => {
     return num >= 1000 ? (num / 1000).toFixed(1) + "K" : num;
   };
 
-
   return (
-    <section className="bg-base-100 shadow-md rounded-2xl p-6 md:p-8 mb-8 border border-base-200">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        📊 Stats & Engagement
-      </h2>
+    <section className="relative overflow-hidden pb-5">
+      {/* Section Header with Left Border - MetadataSection Style */}
+      <div className="mb-8 flex items-center gap-4">
+        <div className="flex items-center gap-3 border-l-4 border-teal-500 pl-4">
+          <h2 className="text-2xl font-black text-slate-800 tracking-tight">
+            Engagement <span className="text-teal-600">Stats</span>
+          </h2>
+        </div>
+        <div className="h-[1px] flex-1 bg-gradient-to-r from-slate-200 to-transparent"></div>
+      </div>
 
-      <div className="grid sm:grid-cols-3 gap-6 text-center text-gray-700">
-        {/* Likes */}
-        <div className="flex flex-col items-center justify-center p-4 rounded-xl hover:bg-base-200 transition">
-          <FaHeart className="text-3xl text-rose-500 mb-2" />
-          <p className="text-lg font-semibold text-gray-800">
-            {formatNumber(lesson.likesCount)}{" "}
-            <span className="text-sm font-normal text-gray-500">Likes</span>
-          </p>
+      {/* Info Cards Grid - Matching MetadataSection Layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        {/* Likes Card */}
+        <div className="group p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-rose-100 transition-all duration-300">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-xl bg-rose-50 text-rose-500 group-hover:scale-110 transition-transform">
+              <FaHeart size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Likes</p>
+              <p className="text-[15px] font-bold text-slate-700 mt-1">
+                {formatNumber(lesson?.likesCount)}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Favorites */}
-        <div className="flex flex-col items-center justify-center p-4 rounded-xl hover:bg-base-200 transition">
-          <FaBookmark className="text-3xl text-amber-500 mb-2" />
-          <p className="text-lg font-semibold text-gray-800">
-            {formatNumber(lesson.favoritesCount)}{" "}
-            <span className="text-sm font-normal text-gray-500">Favorites</span>
-          </p>
+        {/* Favorites Card */}
+        <div className="group p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-amber-100 transition-all duration-300">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-xl bg-amber-50 text-amber-500 group-hover:scale-110 transition-transform">
+              <FaBookmark size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Saved By</p>
+              <p className="text-[15px] font-bold text-slate-700 mt-1">
+                {formatNumber(lesson?.favoritesCount)}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Views */}
-        <div className="flex flex-col items-center justify-center p-4 rounded-xl hover:bg-base-200 transition">
-          <FaEye className="text-3xl text-sky-500 mb-2" />
-          <p className="text-lg font-semibold text-gray-800">
-            {formatNumber(views)}{" "}
-            <span className="text-sm font-normal text-gray-500">Views</span>
-          </p>
+        {/* Views Card */}
+        <div className="group p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-sky-100 transition-all duration-300">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-xl bg-sky-50 text-sky-500 group-hover:scale-110 transition-transform">
+              <FaEye size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Views</p>
+              <p className="text-[15px] font-bold text-slate-700 mt-1">
+                {formatNumber(views)}
+              </p>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   );

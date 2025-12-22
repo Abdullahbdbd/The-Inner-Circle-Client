@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { FaBookmark, FaArrowRight, FaHeart } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import LoadingPage from "../../../component/LoadingPage/LoadingPage";
 
 const MostSavedLessons = () => {
   const axiosSecure = useAxiosSecure();
@@ -25,9 +26,7 @@ const MostSavedLessons = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner text-teal-500 loading-lg"></span>
-      </div>
+      <LoadingPage></LoadingPage>
     );
 
   if (lessons.length === 0) return null;
